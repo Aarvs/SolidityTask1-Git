@@ -1,0 +1,61 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+
+contract marvel{
+    string name = "";
+    uint age;
+    bool isMale;
+    int myScore;
+    address myAddress;
+
+    // Age
+
+    function setAge(uint _age) public {
+        age = _age;
+    }
+
+    function getAge() public view {
+        return age ;
+    }
+
+    // Name 
+
+    function setName(string _name) public {
+        name = _name;
+    }
+
+    function getName() public view {
+        return name;
+    }
+
+    // Score
+
+    function setMyScore(int _myScore) public {
+        myScore = _myScore;
+    }
+
+    function getMyScore() public view {
+        return myScore;
+    }
+
+    // Address 
+
+    function setAddress(address _myAddress) public {
+        myAddress = _myAddress;
+    }
+
+    function getAddress() public view {
+        return myAddress;
+    }
+
+    // Gender 
+
+    function setGender(bool _isMale) public {
+           isMale = _isMale;
+    }
+    function getGender() public view {
+        return isMale;
+    }
+
+}
