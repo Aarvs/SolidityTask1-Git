@@ -1,0 +1,65 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.13;
+
+contract VOHCoinERC2O{
+    event Transfer(address indexed from, address indexed to, uint tokens);
+    event Approved(address indexed tokenOwner, address indexed spender, uint tokens);
+
+    uint256 tokenSupply;
+    
+    string public constant name = "Ocean Coin";
+    string public constant symbol = "OCN";
+    uint8 public constant decimals = 18;
+
+    mapping(address => uint) balances;
+    mapping (address => mapping(address => uint)) allowed;
+
+    constructor(uint _token){
+        tokenSupply = _token;
+        balances[msg.sender] = tokenSupply;
+    }
+
+    function payEther() public payable {
+
+    }
+
+    function getBalance() public view returns(uint){
+        return address(this).balance;
+    }
+
+    function totalSupply() public view returns(uint){
+        return tokenSupply;
+    }
+
+    function balanceOf(address tokenOwner) public view returns (uint) {
+        return balances[tokenOwner];
+    }
+
+    function transfer(address _receiver, uint _numTokens) public returns(bool){
+        require(balances[msg.sender] >= _numTokens, 'no suitable amount');
+        balances[msg.sender] -= _numTokens;
+        balances[_receiver] += _numTokens;
+        emit Transfer(msg.sender,_receiver, _numTokens);
+        return true;
+    }
+
+    function approve(address _delegate, uint _numTokens) public returns(bool){
+        allowed[msg.sender][_delegate] = _numTokens;
+        emit Approved(msg.sender, _delegate, _numTokens);
+        return true;
+    }
+
+    function allowance(address _owner, address _delegate) public view returns(uint){
+        return allowed[_owner][_delegate];
+    }
+
+    function transferFrom(address _owner, address _buyer, uint _numTokens) public returns(bool){
+        require(_numTokens <= balances[_owner]);
+        require(_numTokens <= allowed[_owner][msg.sender]); // here msg.sender is exchange or service
+        balances[_owner] -= _numTokens;
+        allowed[_owner][msg.sender] -= _numTokens;
+        balances[_buyer] += _numTokens;
+        emit Transfer(_owner, _buyer, _numTokens);
+        return true;
+    }
+}
